@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
-
+import {Loader} from "../../components/Loader";
 
 
 export default function ReviewRequest() {
@@ -68,7 +68,7 @@ export default function ReviewRequest() {
             });
     };
 
-    if (loading) return <p>Loading...</p>;
+    if(loading) return <Loader />
     return (
         <>
             <Header name={user.name} role={user.role} />

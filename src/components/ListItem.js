@@ -1,20 +1,24 @@
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function ListItem({item,data,isAdmin}){
     const router = useRouter();
+    const requestId = item._id;
 
     const handleReview = () => {
-        router.push(`/reviewRequest?id=${item._id}`);
+        router.push(`/reviewRequest?id=${requestId}`);
     }
 
     const handleEdit = () => {
-        router.push(`/request?id=${item._id}`);
+        router.push(`/request?id=${requestId}`);
     }
 
-    const handleDelete = () => {
-        // api call to delete request
+    const handleDelete = async () => {
+        // TODO: api call to delete request
+        const response = await axios.delete(`http://localhost:3000/request/${requestId}`);
+          console.log(response)
     }
     
     return (
@@ -34,9 +38,7 @@ export default function ListItem({item,data,isAdmin}){
             </td>)}
             
             {!isAdmin && (<td className="px-4 py-2">
-                <a href="" className="hover:text-gray-400">
-                    <TrashIcon className="w-5 h-5 ml-2 text-red-500" />
-                </a> 
+                    <TrashIcon className="w-5 h-5 ml-2 text-red-500" onClick={handleDelete} />
             </td>)}
 
             {isAdmin && (<td className="px-4 py-2">
