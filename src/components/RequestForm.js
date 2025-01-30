@@ -1,10 +1,36 @@
 'use client';
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import Header from "@/components/Header";
 
-export default function RequestForm({type}) {
+const requestType =[
+    {type: "EVENT_APPEARANCE", value:"Event Appearance"},
+    {type: "BIRTHDAY_GREETING", value:"Birthday Greeting"},
+    {type: "PRODUCT_MARKETING", value:"Product Marketing"}
+]
+
+export default function RequestForm({mode,id}) {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [request, setRequest] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if(mode === "Edit")
+            console.log("test")
+            axios.get(`http://localhost:3000/request/${id}`)
+            .then((response) => {
+                console.log(response)
+                setRequest(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching requests:", error);
+                setError("Failed to load requests");
+                setLoading(false);
+            })
+
+    },[])
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -116,19 +142,35 @@ export default function RequestForm({type}) {
         return formIsValid;
     };
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
           alert("Request submitted successfully!");
-          // API call
+          
+          try {
+            console.log(formData);
+            
+            // Make the POST request to the backend
+            const response = await axios.post("http://localhost:3000/request", formData, {
+              withCredentials: true,
+            });
+      
+            // setMessage(response.data.message); 
+
+          } catch (error) {
+            console.error("Error submitting form:", error);
+            setMessage("Error submitting form.");
+          }
         }
     };
+
+    if (loading) return <p>Loading...</p>;
 
     return (
     <>
     <Header name='Irushi'/>
     <div className="pt-20 px-20">
-        <h2 className="text-xl font-semibold mb-4">{type} Request</h2>
+        <h2 className="text-xl font-semibold mb-4">{mode} Request</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
         {/* Name */}
         <div>
@@ -138,7 +180,7 @@ export default function RequestForm({type}) {
               className="mt-1 block w-full p-2 border border-stone-300 rounded-md focus:ring-stone-600 focus:border-stone-500"
               placeholder="Your Name"
               name="name"
-              value={formData.name}
+              value={mode==="Create" ? formData.name : "name"}
               onChange={handleInputChange}
             />
             {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
@@ -151,7 +193,7 @@ export default function RequestForm({type}) {
               className="mt-1 block w-full p-2 border border-stone-300 rounded-md focus:ring-stone-600 focus:border-stone-500"
               placeholder="Your Email"
               name="email"
-              value={formData.email}
+              value={mode==="Create" ? formData.email : "email"}
               onChange={handleInputChange}
             />
             {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
@@ -162,11 +204,14 @@ export default function RequestForm({type}) {
             <select className="mt-1 block w-full border border-stone-300 p-2 rounded-md focus:border-stone-500 focus:ring-2 focus:ring-stone-500"
                     onChange={handleInputChange}
                     name="type"
-                    value={formData.type}>
+                    value={mode==="Create" ? formData.type : "type"}>
                 <option defaultValue>Select an Option..</option>
-                <option value="option1">Birthday Greeting Video</option>
-                <option value="option2">Product Marketing</option>
-                <option value="option3">Event Appearance</option>
+                {requestType.map(type => 
+                    <option key={requestType.indexOf(type)} value={type.type}>{type.value}</option>
+                )}
+                {/* <option value={requestType[0].id}>{requestType[0].value}</option>
+                <option value={requestType[1].id}>{requestType[1].value}</option>
+                <option value={requestType[2].id}>{requestType[2].value}</option> */}
             </select>  
             {errors.type && <p style={{ color: "red" }}>{errors.type}</p>}
         </div>
@@ -178,7 +223,7 @@ export default function RequestForm({type}) {
               rows="4"
               placeholder="Brief Description"
               name="description"
-              value={formData.description}
+              value={mode==="Create" ? formData.description : request.description}
               onChange={handleInputChange}
             ></textarea>
             {errors.description && <p style={{ color: "red" }}>{errors.description}</p>}

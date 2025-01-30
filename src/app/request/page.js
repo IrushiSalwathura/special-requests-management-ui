@@ -1,10 +1,23 @@
-'use client';
+"use client";
 import RequestForm from "@/components/RequestForm";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Request() {
+    const searchParams = useSearchParams();
+    const requestId = searchParams?.get("id");
+    const [mode, setMode] = useState("Create");
+
+    useEffect(() => {
+        if(requestId){
+            setMode("Edit")
+        }
+            
+    },[])
+
     return (
     <>
-        <RequestForm type='Create'/>
+        <RequestForm mode={mode} id={requestId}/>
     </>
     );
 }
