@@ -54,7 +54,7 @@ export default function ReviewRequest() {
             return;
         }
 
-        const response = axios.put(`http://localhost:3000/request/${requestId}`, {
+        const response = axios.put(`http://localhost:3000/request/review/${requestId}`, {
             status: decision,
             feedback: feedback || null,
         })
@@ -128,14 +128,14 @@ export default function ReviewRequest() {
                                     onChange={(e) => setDecision(e.target.value)}
                                 >
                                     <option value="">Select an option...</option>
-                                    <option value="Accepted">Accept</option>
-                                    <option value="Rejected">Reject</option>
-                                    <option value="Request Changes">Request Changes</option>
+                                    <option value="ACCEPTED">Accept</option>
+                                    <option value="REJECTED">Reject</option>
+                                    <option value="CHANGES_REQUESTED">Request Changes</option>
                                 </select>
                             </div>
 
                             {/* Feedback Field (Only show if "Request Changes" is selected) */}
-                            {(decision === "Rejected" || decision === "Request Changes") && (
+                            {(decision === "REJECTED" || decision === "CHANGES_REQUESTED") && (
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700">Feedback:</label>
                                     <textarea
