@@ -9,7 +9,7 @@ export default function Request() {
     const [mode, setMode] = useState("Create");
 
     useEffect(() => {
-        if(requestId){
+        if(requestId !=null){
             setMode("Edit")
         }
             

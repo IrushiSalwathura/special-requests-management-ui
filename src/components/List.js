@@ -1,7 +1,7 @@
 import ListItem from "./ListItem";
 
 export default function List({data,role}){
-  const isAdmin = role == "user" ? false : true;
+  const isAdmin = role == "USER" ? false : true;
     return(
     <div className="overflow-x-auto p-4">
       <table className="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg">

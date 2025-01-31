@@ -9,7 +9,7 @@ export default function Header({name, role}){
       <h1 className="text-2xl font-bold">Hello {name}</h1>
       <nav>
         <ul className="flex space-x-4">
-        {role!='admin' &&  <li><a href="/request" className="hover:text-gray-400">Create Request</a></li>}
+        {role!='ADMIN' &&  <li><a href="/request" className="hover:text-gray-400">Create Request</a></li>}
           <li><a href="/login" onClick={handleLogout} className="hover:text-gray-400">Logout</a></li>
         </ul>
       </nav>

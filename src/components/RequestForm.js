@@ -12,25 +12,27 @@ const requestType =[
 
 export default function RequestForm({mode,id}) {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [request, setRequest] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [request, setRequest] = useState({name: "",
+        email: "",
+        type: "",
+        description: "",
+        date: "",
+        time: "",});
 
     useEffect(() => {
-        if(mode === "Edit")
-            console.log("test")
+        console.log(mode);
+        if(mode === "Edit" && id!=null){
             axios.get(`http://localhost:3000/request/${id}`)
             .then((response) => {
                 console.log(response)
                 setRequest(response.data);
-                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching requests:", error);
-                setError("Failed to load requests");
-                setLoading(false);
+                // setError("Failed to load requests");
             })
-
-    },[])
+        } 
+    },[request])
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -164,7 +166,6 @@ export default function RequestForm({mode,id}) {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
 
     return (
     <>

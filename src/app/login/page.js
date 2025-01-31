@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,32 +14,27 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    const users = {
-      "irushi@example.com": {
-        password: "irushi123",
-        role: "user",
-        name: "Irushi",
-      },
-      "admin@example.com": {
-        password: "admin123",
-        role: "admin",
-        name: "Admin",
-      },
-    };
-
     try {
-      if (users[email] && users[email].password === password) {
-        // setRole(users[email].role); // Set role in context
-        localStorage.setItem("role", users[email].role);
-        localStorage.setItem("name", users[email].name);
-        router.push("/dashboard"); // Navigate without passing role in URL
-      } else {
-        setError("Invalid email or password");
-      }
+      loginRequest()
     } catch (error) {
-      setError("Something went wrong. Please try again.");
+      setError("Invalid email or password.");
     }
   };
+
+  const loginRequest = async () => {
+    console.log("initial")
+    const response = await axios.post(`http://localhost:3000/user/login`, {
+      email: email,
+      password: password,
+    })
+    console.log(response);
+    if (response != null) {
+      localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("name", response.data.name);
+      router.push("/dashboard");
+    }
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
