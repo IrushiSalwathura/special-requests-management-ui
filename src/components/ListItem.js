@@ -16,20 +16,32 @@ export default function ListItem({item,data,isAdmin}){
     }
 
     const handleDelete = async () => {
-        // TODO: api call to delete request
-        const response = await axios.delete(`http://localhost:3000/request/${requestId}`);
-          console.log(response)
-    }
-    
+        //Get users confirmation
+        const userConfirmed = window.confirm('Are you sure you want to delete this request?');
+
+        if (userConfirmed) {
+            console.log('User clicked OK');
+            const response = await axios.delete(`http://localhost:3000/request/${requestId}`);
+            alert(response.data);
+            window.location.reload();
+        } else {
+            console.log('User clicked Cancel');
+        }
+    } 
+
     return (
         <>
         <tr className="border-b border-gray-200 hover:bg-gray-50">
             <td className="px-4 py-2">{data.indexOf(item)+1}</td>
             <td className="px-4 py-2 font-bold">{item.type}</td>
             {isAdmin && <td className="px-4 py-2">{item.name}</td>}
-            <td className="px-4 py-2">{item.date}</td>
+            <td className="px-4 py-2">{item.preferredDate + " " + item.preferredTime}</td>
             <td className="px-4 py-2">
-                <span className={`px-2 py-1 rounded text-white ${item.status === "Pending" ? "bg-yellow-500" : item.status === "Accepted" ? "bg-green-500" : "bg-red-500" }`}>
+                <span className={`px-2 py-1 rounded text-white 
+                    ${item.status === "PENDING" ? "bg-yellow-500" : 
+                        item.status === "ACCEPTED" ? "bg-green-500" : 
+                        item.status === "REJECTED" ? "bg-red-500" :
+                        "bg-blue-400" }`}>
                 {item.status}
                 </span>
             </td>

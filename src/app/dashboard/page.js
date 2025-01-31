@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import Header from "@/components/Header";
-import List from "@/components/List";
+import Header from "../../components/Header";
+import List from "../../components/List";
 import { useRouter } from "next/navigation";
 
 
-export default function Dashbaord({userType}){
+export default function Dashbaord(){
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
