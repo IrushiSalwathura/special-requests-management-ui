@@ -1,6 +1,6 @@
 # Next.js Frontend Project
 
-This is a frontend project built with Next.js.
+This is a frontend project built with Next.js. Please follow the below steps to setup this project locally.
 
 ## Prerequisites
 
@@ -37,10 +37,10 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-##Contribution
+## Contribution
 
 Feel free to fork and submit pull requests! Please make sure to run the lint and test commands before submitting.
 
-##License
+## License
 
 This project is licensed under the MIT License.
