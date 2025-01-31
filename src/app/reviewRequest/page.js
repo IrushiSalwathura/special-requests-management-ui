@@ -2,7 +2,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Header from "@/components/Header";
+import Header from "../../components/Header";
 import { useRouter } from "next/navigation";
 import {Loader} from "../../components/Loader";
 
@@ -54,7 +54,7 @@ export default function ReviewRequest() {
             return;
         }
 
-        axios.post(`http://localhost:3000/request/${requestId}/review`, {
+        const response = axios.put(`http://localhost:3000/request/${requestId}`, {
             status: decision,
             feedback: feedback || null,
         })
@@ -97,8 +97,8 @@ export default function ReviewRequest() {
                     </div>
 
                     <div className="mb-2">
-                        <span className="font-medium text-stone-600">Preferred Date: </span>
-                        <span className="text-stone-800">{request.createdAt || "Not specified"}</span>
+                        <span className="font-medium text-stone-600">Preferred Date/Time: </span>
+                        <span className="text-stone-800">{request.preferredDate +" "+ request.preferredTime || "Not specified"}</span>
                     </div>
 
                     {/* {formData.file && (

@@ -1,5 +1,5 @@
 "use client";
-import RequestForm from "@/components/RequestForm";
+import RequestForm from "../../components/RequestForm";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
